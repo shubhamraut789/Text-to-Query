@@ -1,0 +1,10 @@
+{
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.21.1",
+    "fast-csv": "^5.0.2",
+    "fs": "^0.0.1-security",
+    "mysql2": "^3.11.3",
+    "node": "^22.10.0"
+  }
+}
