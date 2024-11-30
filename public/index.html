@@ -5,41 +5,135 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Text2Query Chat Interface</title>
     <link rel="stylesheet" href="style.css">
-    
     <script src="https://accounts.google.com/gsi/client" async defer></script>
 </head>
 <body>
-    <div class="chat-header">
-        <h2>Text2Query Assistant</h2>
-        <div id="login-container" class="login-container">
-            <div id="g_id_onload"
-                data-client_id="678671148893-k2hokd3vq65bh5ot1er60pejop1bkcv3.apps.googleusercontent.com"
-                data-callback="handleCredentialResponse"
-                data-auto_prompt="false">
+    <!-- Suggestion sidebar for query suggestions -->
+    <div class="suggestion-sidebar">
+        <h3>Query Templates</h3>
+        
+        <div class="suggestion-group">
+            <h4>Select Queries</h4>
+            <div class="suggestion-item" data-query="Show all users">
+                Show all users
             </div>
-            <div class="g_id_signin" data-type="standard"></div>
-            <button id="logout-btn" class="hidden">Logout</button>
+            <div class="suggestion-item" data-query="Show all transactions">
+                Show all transactions
+            </div>
+            <div class="suggestion-item" data-query="Show all loans">
+                Show all loans
+            </div>
+            <div class="suggestion-item" data-query="Show users with their account number">
+                Show users with their account number
+            </div>
+            <div class="suggestion-item" data-query="Show account number with loan type">
+                Show account number with loan type
+            </div>
+
+        </div>
+    
+        <div class="suggestion-group">
+            <h4>Filter Queries</h4>
+            <div class="suggestion-item" data-query="Show transactions greater than ">
+                Show transactions greater than [amount]
+            </div>
+            <div class="suggestion-item" data-query="Show loans greater than">
+                Show loans greater than [amount]
+            </div>
+            <div class="suggestion-item" data-query="Show transactions done at location ">
+                Show transactions done at location [location]
+            </div>
+            <div class="suggestion-item" data-query="Show transactions made after ">
+                Show transactions made after [yyyy-mm-dd]
+            </div>
+            <div class="suggestion-item" data-query="Show loans with interest rate greater than ">
+                Show loans with interest rate greater than [interest rate]
+            </div>
+            <div class="suggestion-item" data-query="Show loans starting in ">
+                Show loans starting in [year]
+            </div>
+        </div>
+    
+        <div class="suggestion-group">
+            <h4>Aggregation Queries</h4>
+            <div class="suggestion-item" data-query="Show total transactions amount for ">
+                Show total transactions amount for [year]
+            </div>
+            <div class="suggestion-item" data-query="Show average loan amount for loans">
+                Show average loan amount for loans
+            </div>
+            <div class="suggestion-item" data-query="Show maximum loan amount issued in ">
+                Show maximum loan amount issued in [year]
+            </div>
+            <div class="suggestion-item" data-query="Show total transaction amount by transaction type">
+                Show total transaction amount by transaction type
+            </div>
+            <div class="suggestion-item" data-query="Show highest transaction by transaction type">
+                Show highest transaction amount by transaction type
+            </div>
+            <div class="suggestion-item" data-query="Show average interest rate for loans of type">
+                Show average interest rate for loans of type ['Home Loan']
+            </div>
+        </div>
+
+        <div class="suggestion-group">
+            <h4>Limit Queries</h4>
+            <div class="suggestion-item" data-query="Show top users with highest loan">
+                Show top [LIMIT] users with highest loan
+            </div>
+            <div class="suggestion-item" data-query="Show top users with highest transactions">
+                Show top [LIMIT] users with highest transactions 
+            </div>
+            <div class="suggestion-item" data-query="Provide me the top transactions of account number for">
+                Provide me the top [LIMIT] transactions of account number [account number] for [year]
+            </div>
+        </div>
+    
+        <div class="suggestion-group">
+            <h4>Join Queries</h4>
+            <div class="suggestion-item" data-query="Show users with their transactions">
+                Show users with their transactions
+            </div>
+            <div class="suggestion-item" data-query="Show users along with their loan details">
+                Show users along with their loan details
+            </div>
+            <div class="suggestion-item" data-query="Show user with highest loan">
+                Show user with highest loan
+            </div>
         </div>
     </div>
 
-    <div id="initial-state" class="initial-state">
-        <h1 class="welcome-text"></h1>
-    </div>
-    <div class="chat-box" id="chat-box">
-       
-    </div>
+    <!-- Main content wrapper -->
+    <div class="main-content">
+        <div class="chat-header">
+            <h2>Text2Query Assistant</h2>
+            <div id="login-container" class="login-container">
+                <div id="g_id_onload"
+                    data-client_id="678671148893-k2hokd3vq65bh5ot1er60pejop1bkcv3.apps.googleusercontent.com"
+                    data-callback="handleCredentialResponse"
+                    data-auto_prompt="false">
+                </div>
+                <div class="g_id_signin" data-type="standard"></div>
+                <button id="logout-btn" class="hidden">Logout</button>
+            </div>
+        </div>
 
-    <div class="chat-input-container" id="chat-input-container">
-        <div class="input-wrapper">
-            <input type="text" id="chat-input" placeholder="Type your query here..." autofocus>
-            <button id="send-btn">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="20" height="20">
-                    <path d="M2.01 21L23 12 2.01 3v7l15 2-15 2z"/>
-                </svg>
-            </button>
+        <div id="initial-state" class="initial-state">
+            <h1 class="welcome-text"></h1>
+        </div>
+        <div class="chat-box" id="chat-box"></div>
+
+        <div class="chat-input-container" id="chat-input-container">
+            <div class="input-wrapper">
+                <input type="text" id="chat-input" placeholder="Type your query here..." autofocus>
+                <button id="send-btn">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="20" height="20">
+                        <path d="M2.01 21L23 12 2.01 3v7l15 2-15 2z"/>
+                    </svg>
+                </button>
+            </div>
         </div>
     </div>
     <script src="script.js"></script>
 </body>
 </html>
-
