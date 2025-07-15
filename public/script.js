@@ -85,20 +85,41 @@ function processQuery(userMessage) {
         body: JSON.stringify({ query: userMessage }),
     })
     .then(response => response.json())
-    .then(data => {
+    .then(async (data) => {
         if (data.error) {
-            appendMessage("Error: " + data.error, "bot");
-        } else if (data.downloadLink) {
-            const downloadLink = `<a href="${data.downloadLink}" download>Download CSV</a>`;
-            appendMessage("Your query result is ready. " + downloadLink, "bot", true);
+            appendMessage("❌ Error: " + data.error, "bot");
         } else {
-            appendMessage("No results or error occurred.", "bot");
+            // Show temporary message
+            appendMessage("Processing your query. Waiting for result...", "bot");
+
+            const isReady = await waitForCSV('/results.csv', 5, 2000);
+
+            if (isReady) {
+                const downloadLink = `<a href="/results.csv" download>Download CSV</a>`;
+                appendMessage("✅ Your query result is ready. " + downloadLink, "bot", true);
+            } else {
+                appendMessage("⚠️ No results found or processing failed. Please try again.", "bot");
+            }
         }
     })
     .catch(error => {
-        appendMessage("An error occurred: " + error.message, "bot");
+        appendMessage("❌ An error occurred: " + error.message, "bot");
     });
 }
+
+async function waitForCSV(link, maxAttempts = 5, interval = 2000) {
+    for (let i = 0; i < maxAttempts; i++) {
+        try {
+            const res = await fetch(link, { method: 'HEAD' });
+            if (res.ok) return true;
+        } catch (e) {
+            console.warn("Waiting for CSV...");
+        }
+        await new Promise(resolve => setTimeout(resolve, interval));
+    }
+    return false;
+}
+
 
 // Event Listeners
 sendBtn.addEventListener("click", () => {
